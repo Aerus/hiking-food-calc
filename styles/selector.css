@@ -1,0 +1,13 @@
+.v-scrollable{
+    height: 300px;
+    overflow-y: auto;
+}
+
+#dishSelector, #selectionControls, #selectionDestination{
+    display: inline-block;
+    min-width: 150px;
+}
+
+#daysCount, #peopleCount{
+    width: 100px;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html manifest="demo.appcache">
+<head>
+    <meta charset="UTF-8">
+    <title>Food advisor</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="styles/selector.css">
+
+    <!-- Must js files-->
+    <script src="scripts/localization.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <header>
+            <script type="text/javascript">document.write(Localization.PAGE_TITLE);</script>
+        </header>
+
+        <section id="selector">
+            <form name="foodSelector">
+                <div>
+                    <label for="daysCount">
+                        <script>document.write(Localization.DAYS_LABLE)</script>
+                    </label>
+                    <script>
+                        document.write(
+                                '<input id="daysCount" name="daysCount" type="number" min="1" max="100" placeholder="'
+                                        + Localization.DAYS_PLACEHOLDER + '">'
+                        );
+                    </script>
+
+                    <label for="peopleCount">
+                        <script>document.write(Localization.PEOPLE_LABLE)</script>
+                    </label>
+                    <script>
+                        document.write(
+                                '<input id="peopleCount" name="peopleCount" type="number" min="1" max="100" placeholder="'
+                                + Localization.PEOPLE_PLACEHOLDER + '">'
+                        );
+                    </script>
+                </div>
+
+                <div id="dishSelector" class="v-scrollable">
+
+                </div>
+
+                <div id="selectionControls" class="v-scrollable">
+
+                </div>
+
+                <div id="selectionDestination" class="v-scrollable">
+
+                </div>
+
+            </form>
+        </section>
+
+
+        <section id="results">
+            <article id="packed">
+
+            </article>
+            <article id="buy">
+
+            </article>
+        </section>
+
+
+
+        <section id="footer">
+
+        </section>
+    </div>
+
+    <!-- JS -->
+</body>
+</html>
