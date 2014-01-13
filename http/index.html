@@ -7,8 +7,10 @@
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="styles/selector.css">
 
-    <!-- Must js files-->
+    <!-- Must-have js files-->
     <script src="scripts/localization.js"></script>
+    <script src="scripts/common.js"></script>
+    <script src="scripts/router.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -22,21 +24,17 @@
                     <label for="daysCount">
                         <script>document.write(Localization.DAYS_LABLE)</script>
                     </label>
+                    <input id="daysCount" name="daysCount" type="number" min="1" max="100" placeholder=""/>
                     <script>
-                        document.write(
-                                '<input id="daysCount" name="daysCount" type="number" min="1" max="100" placeholder="'
-                                        + Localization.DAYS_PLACEHOLDER + '">'
-                        );
+                        document.getElementById('daysCount').placeholder = Localization.DAYS_PLACEHOLDER;
                     </script>
 
                     <label for="peopleCount">
                         <script>document.write(Localization.PEOPLE_LABLE)</script>
                     </label>
+                    <input id="peopleCount" name="peopleCount" type="number" min="1" max="100" placeholder=""/>
                     <script>
-                        document.write(
-                                '<input id="peopleCount" name="peopleCount" type="number" min="1" max="100" placeholder="'
-                                + Localization.PEOPLE_PLACEHOLDER + '">'
-                        );
+                        document.getElementById('peopleCount').placeholder = Localization.PEOPLE_PLACEHOLDER;
                     </script>
                 </div>
 
@@ -73,5 +71,11 @@
     </div>
 
     <!-- JS -->
+    <script src="scripts/selectors/dishList.js"></script>
+    <script src="scripts/db/dbMokup.js"></script>
+    <script src="scripts/db/dbWrap.js"></script>
+
+    <!-- ONLOAD -->
+    <script src="scripts/onload.js"></script>
 </body>
 </html>
