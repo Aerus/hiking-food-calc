@@ -8,6 +8,7 @@ var Localization = {
     DAYS_PLACEHOLDER: "К-во дней",
 
     PEOPLE_LABLE: "Группа:",
-    PEOPLE_PLACEHOLDER: "К-во людей"
+    PEOPLE_PLACEHOLDER: "К-во людей",
 
+    APPLY_BUTTON_TEXT: "Применить"
 };

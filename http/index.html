@@ -8,9 +8,11 @@
     <link rel="stylesheet" type="text/css" href="styles/selector.css">
 
     <!-- Must-have js files-->
-    <script src="scripts/localization.js"></script>
-    <script src="scripts/common.js"></script>
-    <script src="scripts/router.js"></script>
+    <script src="scripts/commons/localization.js"></script>
+    <script src="scripts/commons/common.js"></script>
+    <script src="scripts/commons/observer.js"></script>
+    <script src="scripts/commons/pageGlobals.js"></script>
+    <script src="scripts/commons/router.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -35,6 +37,14 @@
                     <input id="peopleCount" name="peopleCount" type="number" min="1" max="100" placeholder=""/>
                     <script>
                         document.getElementById('peopleCount').placeholder = Localization.PEOPLE_PLACEHOLDER;
+                    </script>
+
+                    <input id="applyer" type="button" value=""/>
+                    <script>
+                        document.getElementById('applyer').value = Localization.APPLY_BUTTON_TEXT;
+                        document.getElementById('applyer').onclick = function(event){
+                            GlobalObserver.publish(Event.APPLY_BUTTON_CLICKED, event);
+                        };
                     </script>
                 </div>
 
@@ -71,7 +81,7 @@
     </div>
 
     <!-- JS -->
-    <script src="scripts/selectors/dishList.js"></script>
+    <script src="scripts/view/dishList.js"></script>
     <script src="scripts/db/dbMokup.js"></script>
     <script src="scripts/db/dbWrap.js"></script>
 
