@@ -10,5 +10,9 @@ var Localization = {
     PEOPLE_LABLE: "Группа:",
     PEOPLE_PLACEHOLDER: "К-во людей",
 
-    APPLY_BUTTON_TEXT: "Применить"
+    APPLY_BUTTON_TEXT: "Применить",
+
+    BREAKFAST_LABEL: "Завтрак",
+    LUNCH_LABEL: "Обед",
+    SUPPER_LABEL: "Ужин"
 };

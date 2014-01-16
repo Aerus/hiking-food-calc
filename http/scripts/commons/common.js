@@ -184,9 +184,11 @@ function Class(name, construct, parent){
             //override all parent fields with child fields
             var extender = new construct();
 
-            if (parentInstance)
-            for(var key in parentInstance){
-                this[key] = parentInstance[key];
+            if (parentInstance){
+                for(var key in parentInstance){
+                    this[key] = parentInstance[key];
+                }
+                this.super = parentInstance;
             }
 
             for(var key in extender){
