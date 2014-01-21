@@ -8,11 +8,13 @@
 var GlobalObserver = new Observer();
 
 var Event = {
-    APPLY_BUTTON_CLICKED: 0
+    APPLY_BUTTON_CLICKED: 0,
+    SINGLE_TIME_MENU_CLICKED: 1
 };
 
 var CSSClass = {
     SINGLE_DAY_MENU: 'sigle-day-menu',
     SINGLE_TIME_MENU: 'single-time-menu',
-    SINGLE_DAY_LABEL: 'sigle-day-menu-label'
+    SINGLE_DAY_LABEL: 'sigle-day-menu-label',
+    SELECTED: 'selected'
 };

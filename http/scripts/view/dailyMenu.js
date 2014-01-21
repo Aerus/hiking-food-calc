@@ -44,7 +44,7 @@ var DailyMenu = {
     },
 
     compileSingleTimeMenu: function(label){
-        return buildElement('div', {
+        var singelTime = buildElement('div', {
             label: {
                 _tag: 'span',
                 innerText: label
@@ -54,9 +54,38 @@ var DailyMenu = {
             },
             class: CSSClass.SINGLE_TIME_MENU
         });
+
+        singelTime.onclick = function(event){
+            GlobalObserver.publish(Event.SINGLE_TIME_MENU_CLICKED, {
+                event: event,
+                sender: singelTime
+            });
+        };
+
+        return singelTime;
+    },
+
+    selected: {
+        singleTime: null,
+        singleDay: null
     }
 };
 
 GlobalObserver.subscribe(Event.APPLY_BUTTON_CLICKED, function(){
     DailyMenu.init(GroupSettings.getDaysCount());
+});
+
+GlobalObserver.subscribe(Event.SINGLE_TIME_MENU_CLICKED, function(data){
+    if (DailyMenu.selected.singleTime){
+        DailyMenu.selected.singleTime.removeClass(CSSClass.SELECTED);
+    }
+    if (DailyMenu.selected.singleDay){
+        DailyMenu.selected.singleDay.removeClass(CSSClass.SELECTED);
+    }
+
+    data.sender.toggleClass(CSSClass.SELECTED);
+    data.sender.parentNode.addClass(CSSClass.SELECTED);
+
+    DailyMenu.selected.singleTime = data.sender;
+    DailyMenu.selected.singleDay = data.sender.parentNode;
 });
