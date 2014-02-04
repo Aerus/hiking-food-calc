@@ -9,12 +9,18 @@ var GlobalObserver = new Observer();
 
 var Event = {
     APPLY_BUTTON_CLICKED: 0,
-    SINGLE_TIME_MENU_CLICKED: 1
+    MEAL_CLICKED: 1,
+    ADD_DISH_BUTTON_CLICKED: 2,
+    REMOVE_DISH_BUTTON_CLICKED: 3,
+    CLEAR_BUTTON_CLICKED: 4
 };
 
 var CSSClass = {
-    SINGLE_DAY_MENU: 'sigle-day-menu',
-    SINGLE_TIME_MENU: 'single-time-menu',
-    SINGLE_DAY_LABEL: 'sigle-day-menu-label',
-    SELECTED: 'selected'
+    SELECTED: 'selected',
+    MEAL: 'meal',
+    DISH: 'dish',
+    MEAL_LABEL: 'meal-label',
+    MENU_DAY: 'menu-day',
+    MENU_DAY_LABEL: 'menu-day-label',
+    MENU_DAYS_LIST: 'menu-days-list'
 };

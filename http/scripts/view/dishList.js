@@ -34,5 +34,24 @@ var DishList = {
                 }
             )
         );
+    },
+
+    /**
+     * Gets names of ticked dishes
+     *
+     * @returns {Array} String[] dish names
+     */
+    getSelected: function(){
+        var labels = this.getDishListDomElement().querySelectorAll('input[type=checkbox]:checked + label');
+        var results = [];
+
+        if (labels instanceof NodeList
+            && labels.length > 0){
+            for (var i = 0; i < labels.length; i++){
+                results.push(labels[i].innerText);
+            }
+        }
+
+        return results;
     }
 };

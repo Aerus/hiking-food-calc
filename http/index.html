@@ -54,7 +54,29 @@
                 </div>
 
                 <div id="selectionControls" class="v-scrollable">
-
+                    <input type="button" id="addDishButton" value="">
+                    <script>
+                        document.getElementById('addDishButton').value = Localization.ADD_DISH_BUTTON_TEXT;
+                        document.getElementById('addDishButton').onclick = function(event){
+                            GlobalObserver.publish(Event.ADD_DISH_BUTTON_CLICKED, event);
+                        };
+                    </script>
+                    <br/>
+                    <input type="button" id="removeDishButton" value="">
+                    <script>
+                        document.getElementById('removeDishButton').value = Localization.REMOVE_DISH_BUTTON_TEXT;
+                        document.getElementById('removeDishButton').onclick = function(event){
+                            GlobalObserver.publish(Event.REMOVE_DISH_BUTTON_CLICKED, event);
+                        };
+                    </script>
+                    <br/>
+                    <input type="button" id="clearButton" value="">
+                    <script>
+                        document.getElementById('clearButton').value = Localization.CLEAR_BUTTON_TEXT;
+                        document.getElementById('clearButton').onclick = function(event){
+                            GlobalObserver.publish(Event.CLEAR_BUTTON_CLICKED, event);
+                        };
+                    </script>
                 </div>
 
                 <div id="selectionDestination" class="v-scrollable">
@@ -86,6 +108,7 @@
     <script src="scripts/db/dbWrap.js"></script>
 
     <script src="scripts/view/groupSettings.js"></script>
+    <script src="scripts/view/meal.js"></script>
     <script src="scripts/view/dishList.js"></script>
     <script src="scripts/view/dailyMenu.js"></script>
 

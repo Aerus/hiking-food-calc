@@ -1,22 +1,44 @@
-.sigle-day-menu:first-child {
+.menu-day:first-child {
     margin-bottom: 0em;
     margin-top: 0em;
 }
 
-.sigle-day-menu {
+.menu-day {
     margin-bottom: 0em;
     margin-top: 1em;
     padding: 0.3em;
 }
 
-.sigle-day-menu {
+.menu-day {
     background-color: rgba(0, 0, 0, 0.1);
+    max-width: 400px;
 }
 
-.sigle-day-menu.selected {
+.menu-day.selected {
     background-color: rgba(34, 137, 197, 0.22);
 }
 
-.single-time-menu.selected {
+.meal.selected {
     background-color: rgba(34, 137, 197, 0.22);
+}
+
+.meal .meal-label {
+    text-transform:uppercase;
+    display: block;
+}
+
+.meal .dish {
+    margin-left: 1em;
+    margin-top: 1em;
+
+    border-width: 1px;
+    border-color: burlywood;
+    border-style: solid;
+
+    border-radius: 1em;
+    padding: 0.5em;
+
+    white-space: nowrap;
+
+    display: inline-block;
 }

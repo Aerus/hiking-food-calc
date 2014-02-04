@@ -2,16 +2,6 @@
  * Created by Serhii_Kotyk on 1/16/14.
  */
 var DailyMenu = {
-    init: function(daysCount){
-        if (typeof daysCount !== 'number'
-            || daysCount < 1){
-            return;
-        }
-        this.clear();
-        for(var i = 0; i < daysCount; i++){
-            this.getMenuDomContainer().appendChild(this.compileSingleDayMenu(i + 1));
-        }
-    },
 
     clear: function(){
         this.getMenuDomContainer().innerHTML = "";
@@ -24,68 +14,168 @@ var DailyMenu = {
         return this._domContainer;
     },
 
-    compileSingleDayMenu: function(label){
-        var div = buildElement(
-            {
-                _tag: 'div',
-                class: CSSClass.SINGLE_DAY_MENU,
-                label: {
-                    _tag: 'div',
-                    innerText: label,
-                    class: CSSClass.SINGLE_DAY_LABEL
-                },
-                breakfest: this.compileSingleTimeMenu(Localization.BREAKFAST_LABEL),
-                lunch: this.compileSingleTimeMenu(Localization.LUNCH_LABEL),
-                supper: this.compileSingleTimeMenu(Localization.SUPPER_LABEL)
-            }
-        );
+    compileMeal: function(meal, label){
+        if (meal instanceof Meal){
+            var mealContainer = buildElement('div', {
+                class: CSSClass.MEAL
+            });
 
-        return div;
+            if (label){
+                mealContainer.appendChild(
+                    buildElement('span', {
+                        class: CSSClass.MEAL_LABEL,
+                        innerText: label
+                    })
+                );
+            }
+
+            for (var i = 0; i < meal.dishCount(); i++){
+                var currentDish = meal.getDish(i),
+                    dishElement = buildElement('span', {
+                        class: CSSClass.DISH,
+                        innerText: currentDish
+                    });
+
+                mealContainer.appendChild(dishElement);
+            }
+
+            mealContainer.onclick = function(event){
+                GlobalObserver.publish(Event.MEAL_CLICKED, {
+                    event: event,
+                    sender: mealContainer,
+                    objSender: meal
+                });
+            };
+
+            return mealContainer;
+        }else{
+            throw new Error("wrong type. Can't convert " + typeof(meal) + " to Meal");
+        }
     },
 
-    compileSingleTimeMenu: function(label){
-        var singelTime = buildElement('div', {
-            label: {
-                _tag: 'span',
-                innerText: label
-            },
-            value: {
-                _tag: 'span'
-            },
-            class: CSSClass.SINGLE_TIME_MENU
-        });
-
-        singelTime.onclick = function(event){
-            GlobalObserver.publish(Event.SINGLE_TIME_MENU_CLICKED, {
-                event: event,
-                sender: singelTime
+    compileMenuDay: function(menuDay, label){
+        if (menuDay instanceof MenuDay){
+            var menuContainer = buildElement('div', {
+                class: CSSClass.MENU_DAY
             });
-        };
 
-        return singelTime;
+            if (label){
+                menuContainer.appendChild(
+                    buildElement('span', {
+                        class: CSSClass.MENU_DAY_LABEL,
+                        innerText: label
+                    })
+                );
+            }
+
+            menuContainer.appendChild(
+                this.compileMeal(menuDay.getBreakfest(), Localization.BREAKFAST_LABEL)
+            );
+
+            menuContainer.appendChild(
+                this.compileMeal(menuDay.getLunch(), Localization.LUNCH_LABEL)
+            );
+
+            menuContainer.appendChild(
+                this.compileMeal(menuDay.getSupper(), Localization.SUPPER_LABEL)
+            );
+
+            return menuContainer;
+
+        }else{
+            throw new Error("wrong type. Can't convert " + typeof(menuDay) + " to MenuDay");
+        }
+    },
+
+    compileMenuDaysList: function(menuDaysList){
+        if (menuDaysList instanceof MenuDaysList){
+            var container = buildElement('div', {
+                class: CSSClass.MENU_DAYS_LIST
+            });
+
+            for (var i = 0; i < menuDaysList.count(); i++){
+                container.appendChild(
+                    this.compileMenuDay(
+                        menuDaysList.get(i),
+                        Localization.MENU_DAY_TITLE + ' ' + i + ': '
+                    )
+                );
+            }
+
+            return container;
+        }else{
+            throw new Error("wrong type. Can't convert " + typeof(menuDay) + " to MenuDaysList");
+        }
+    },
+
+    fixValidateModel: function(){
+        var settingsDaysCount = GroupSettings.getDaysCount(),
+            modelDaysCount = this.model.days.count();
+
+        if (settingsDaysCount > modelDaysCount){
+            for (var i = modelDaysCount; i < settingsDaysCount; i++){
+                this.model.days.add(
+                    new MenuDay()
+                );
+            }
+        }else if ( settingsDaysCount < modelDaysCount ){
+            for (var i = modelDaysCount; i > settingsDaysCount; i--){
+                this.model.days.remove(this.model.days.count() -1);
+            }
+        }
+    },
+
+    renderModel: function(){
+        this.fixValidateModel();
+
+        this.clear();
+
+        this.getMenuDomContainer().appendChild(this.compileMenuDaysList(this.model.days));
     },
 
     selected: {
-        singleTime: null,
-        singleDay: null
-    }
+        meal: null,
+        day: null
+    },
+
+    model: {
+        days: new MenuDaysList()
+    },
+
+    lastMealClickedEvent: null
 };
 
 GlobalObserver.subscribe(Event.APPLY_BUTTON_CLICKED, function(){
-    DailyMenu.init(GroupSettings.getDaysCount());
+    DailyMenu.renderModel();
 });
 
-GlobalObserver.subscribe(Event.SINGLE_TIME_MENU_CLICKED, function(data){
-    if (DailyMenu.selected.singleTime){
-        DailyMenu.selected.singleTime.removeClass(CSSClass.SELECTED);
+GlobalObserver.subscribe(Event.MEAL_CLICKED, function(data){
+    if (DailyMenu.selected.meal){
+        DailyMenu.selected.meal.removeClass(CSSClass.SELECTED);
     }
-    if (DailyMenu.selected.singleDay){
-        DailyMenu.selected.singleDay.removeClass(CSSClass.SELECTED);
+    if (DailyMenu.selected.day){
+        DailyMenu.selected.day.removeClass(CSSClass.SELECTED);
     }
 
     data.sender.toggleClass(CSSClass.SELECTED);
     data.sender.parentNode.addClass(CSSClass.SELECTED);
 
-    DailyMenu.selected.singleTime = data.sender;
-    DailyMenu.selected.singleDay = data.sender.parentNode;
+    DailyMenu.selected.meal = data.sender;
+    DailyMenu.selected.day = data.sender.parentNode;
+
+    DailyMenu.lastMealClickedEvent = data;
+});
+
+GlobalObserver.subscribe(Event.ADD_DISH_BUTTON_CLICKED, function(data){
+    var selectedDishes = DishList.getSelected();
+    if (selectedDishes instanceof Array
+        && selectedDishes.length > 0){
+        var selectedMeal = DailyMenu.lastMealClickedEvent.objSender;
+
+        for (var i = 0; i < selectedDishes.length; i++){
+            selectedMeal.addDish(selectedDishes[i]);
+        }
+
+        DailyMenu.renderModel();
+    }
 });
