@@ -30,20 +30,35 @@ var DailyMenu = {
             }
 
             for (var i = 0; i < meal.dishCount(); i++){
-                var currentDish = meal.getDish(i),
-                    dishElement = buildElement('span', {
-                        class: CSSClass.DISH,
-                        innerText: currentDish
-                    });
+                //use anonym function to avoid scope conflicts
+                //and ovverides of veriables in loop
+                var dishel = function (meal){
+                    var currentDish = meal.getDish(i),
+                        dishElement = buildElement('span', {
+                            class: CSSClass.DISH,
+                            innerText: currentDish
+                        });
 
-                mealContainer.appendChild(dishElement);
+                    dishElement.onclick = function(event){
+                        GlobalObserver.publish(Event.MEAL_DISH_CLICKED, {
+                            event: event,
+                            sender: dishElement,
+                            dish: currentDish,
+                            meal: meal
+                        });
+                    };
+                    return dishElement;
+
+                }(meal);
+
+                mealContainer.appendChild(dishel);
             }
 
             mealContainer.onclick = function(event){
                 GlobalObserver.publish(Event.MEAL_CLICKED, {
                     event: event,
                     sender: mealContainer,
-                    objSender: meal
+                    meal: meal
                 });
             };
 
@@ -126,6 +141,7 @@ var DailyMenu = {
     },
 
     renderModel: function(){
+        this.dropSelection();
         this.fixValidateModel();
 
         this.clear();
@@ -135,7 +151,16 @@ var DailyMenu = {
 
     selected: {
         meal: null,
-        day: null
+        mealObj: null,
+        day: null,
+        dish: null,
+        dishObj: null
+    },
+
+    dropSelection: function(){
+        for(var key in this.selected){
+            this.selected[key] = null;
+        }
     },
 
     model: {
@@ -150,32 +175,113 @@ GlobalObserver.subscribe(Event.APPLY_BUTTON_CLICKED, function(){
 });
 
 GlobalObserver.subscribe(Event.MEAL_CLICKED, function(data){
-    if (DailyMenu.selected.meal){
-        DailyMenu.selected.meal.removeClass(CSSClass.SELECTED);
-    }
-    if (DailyMenu.selected.day){
-        DailyMenu.selected.day.removeClass(CSSClass.SELECTED);
-    }
+    if (DailyMenu.selected.meal != data.sender){
+        if (DailyMenu.selected.meal){
+            GlobalObserver.publish(Event.MEAL_UNSELECTED, {
+                event: data.event,
+                sender: DailyMenu.selected.meal
+            });
+        }
+        GlobalObserver.publish(Event.MEAL_SELECTED, data);
+        GlobalObserver.publish(Event.MEAL_SELECTION_CHANGED, data);
 
-    data.sender.toggleClass(CSSClass.SELECTED);
-    data.sender.parentNode.addClass(CSSClass.SELECTED);
+        if (DailyMenu.selected.day){
+            DailyMenu.selected.day.removeClass(CSSClass.SELECTED);
+        }
 
+        data.sender.parentNode.addClass(CSSClass.SELECTED);
+
+        DailyMenu.selected.day = data.sender.parentNode;
+    }
+});
+
+GlobalObserver.subscribe(Event.MEAL_UNSELECTED, function(data){
+    if (data.sender){
+        data.sender.removeClass(CSSClass.SELECTED);
+    }
+    DailyMenu.selected.meal = null;
+    DailyMenu.selected.mealObj = null;
+});
+
+GlobalObserver.subscribe(Event.MEAL_SELECTED, function(data){
+    data.sender.addClass(CSSClass.SELECTED);
     DailyMenu.selected.meal = data.sender;
-    DailyMenu.selected.day = data.sender.parentNode;
+    DailyMenu.selected.mealObj = data.meal;
+});
 
-    DailyMenu.lastMealClickedEvent = data;
+GlobalObserver.subscribe(Event.MEAL_SELECTION_CHANGED, function(data){
+    if (!data.event.srcElement.isClass(CSSClass.DISH))
+    if (DailyMenu.selected.meal
+        || DailyMenu.selected.mealObj){
+        GlobalObserver.publish(Event.MEAL_DISH_UNSELECTED, {
+            event: data.event,
+            sender: DailyMenu.selected.dish,
+            dish: DailyMenu.selected.dishObj
+        });
+    }
 });
 
 GlobalObserver.subscribe(Event.ADD_DISH_BUTTON_CLICKED, function(data){
     var selectedDishes = DishList.getSelected();
     if (selectedDishes instanceof Array
         && selectedDishes.length > 0){
-        var selectedMeal = DailyMenu.lastMealClickedEvent.objSender;
+        var selectedMeal = DailyMenu.selected.mealObj;
 
-        for (var i = 0; i < selectedDishes.length; i++){
-            selectedMeal.addDish(selectedDishes[i]);
+        if (selectedMeal){
+            for (var i = 0; i < selectedDishes.length; i++){
+                selectedMeal.addDish(selectedDishes[i]);
+            }
+
+            DailyMenu.renderModel();
         }
+    }
+});
 
-        DailyMenu.renderModel();
+GlobalObserver.subscribe(Event.MEAL_DISH_CLICKED, function(data){
+    if (DailyMenu.selected.dish){
+        GlobalObserver.publish(Event.MEAL_DISH_UNSELECTED, {
+            event: data.event,
+            sender: DailyMenu.selected.dish
+        });
+    }
+
+    GlobalObserver.publish(Event.MEAL_DISH_SELECTED, data);
+    GlobalObserver.publish(Event.MEAL_DISH_SELECTION_CHANGED, data);
+});
+
+GlobalObserver.subscribe(Event.MEAL_DISH_SELECTED, function(data){
+    if (data.sender){
+        data.sender.addClass(CSSClass.SELECTED);
+    }
+    DailyMenu.selected.dish = data.sender;
+    DailyMenu.selected.dishObj = data.dish;
+    MenuControls.showRemoveDishButton();
+});
+
+GlobalObserver.subscribe(Event.MEAL_DISH_UNSELECTED, function(data){
+    if (data.sender){
+        data.sender.removeClass(CSSClass.SELECTED);
+    }
+    DailyMenu.selected.dish = null;
+    DailyMenu.selected.dishObj = null;
+    MenuControls.hideRemoveDishButton();
+});
+
+GlobalObserver.subscribe(Event.REMOVE_DISH_BUTTON_CLICKED, function(){
+    if (DailyMenu.selected.dish
+        && DailyMenu.selected.meal){
+        if (DailyMenu.selected.dishObj
+            && DailyMenu.selected.mealObj){
+            DailyMenu.selected.mealObj.remove(DailyMenu.selected.dishObj);
+            DailyMenu.renderModel();
+        }
+    }
+});
+
+GlobalObserver.subscribe(Event.MEAL_DISH_SELECTION_CHANGED, function(){
+    if (DailyMenu.selected.dish){
+        MenuControls.showAddDishButton();
+    }else{
+        MenuControls.hideAddDishButton();
     }
 });

@@ -17,6 +17,9 @@
 .menu-day.selected {
     background-color: rgba(34, 137, 197, 0.22);
 }
+.meal {
+    display: block;
+}
 
 .meal.selected {
     background-color: rgba(34, 137, 197, 0.22);
@@ -41,4 +44,8 @@
     white-space: nowrap;
 
     display: inline-block;
+}
+
+.meal .dish.selected {
+    background-color: burlywood;
 }

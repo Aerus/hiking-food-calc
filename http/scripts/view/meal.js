@@ -35,6 +35,18 @@ var Meal = function(){
     this.dishCount = function(){
         return dishes.length;
     };
+
+    this.indexOf = function(el){
+        return dishes.indexOf(el);
+    };
+
+    this.remove = function(el){
+        var index = this.indexOf(el);
+        if (index >= 0){
+            dishes.splice(index, 1);
+        }
+    };
+
 };
 
 Class('Meal', Meal);

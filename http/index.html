@@ -5,6 +5,7 @@
     <title>Food advisor</title>
 
     <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="styles/global.css">
     <link rel="stylesheet" type="text/css" href="styles/selector.css">
     <link rel="stylesheet" type="text/css" href="styles/dailyMenu.css">
 
@@ -54,7 +55,7 @@
                 </div>
 
                 <div id="selectionControls" class="v-scrollable">
-                    <input type="button" id="addDishButton" value="">
+                    <input type="button" id="addDishButton"  class="hidden" value="">
                     <script>
                         document.getElementById('addDishButton').value = Localization.ADD_DISH_BUTTON_TEXT;
                         document.getElementById('addDishButton').onclick = function(event){
@@ -62,7 +63,7 @@
                         };
                     </script>
                     <br/>
-                    <input type="button" id="removeDishButton" value="">
+                    <input type="button" id="removeDishButton" class="hidden" value="">
                     <script>
                         document.getElementById('removeDishButton').value = Localization.REMOVE_DISH_BUTTON_TEXT;
                         document.getElementById('removeDishButton').onclick = function(event){
@@ -70,7 +71,7 @@
                         };
                     </script>
                     <br/>
-                    <input type="button" id="clearButton" value="">
+                    <input type="button" id="clearButton" class="hidden" value="">
                     <script>
                         document.getElementById('clearButton').value = Localization.CLEAR_BUTTON_TEXT;
                         document.getElementById('clearButton').onclick = function(event){
@@ -86,7 +87,6 @@
             </form>
         </section>
 
-
         <section id="results">
             <article id="packed">
 
@@ -95,8 +95,6 @@
 
             </article>
         </section>
-
-
 
         <section id="footer">
 
@@ -111,6 +109,7 @@
     <script src="scripts/view/meal.js"></script>
     <script src="scripts/view/dishList.js"></script>
     <script src="scripts/view/dailyMenu.js"></script>
+    <script src="scripts/view/menuControls.js"></script>
 
     <!-- ONLOAD -->
     <script src="scripts/onload.js"></script>
