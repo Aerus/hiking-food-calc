@@ -20,5 +20,7 @@ var Localization = {
     REMOVE_DISH_BUTTON_TEXT: "X< Убрать блюдо",
     CLEAR_BUTTON_TEXT: "X< Очистить",
 
-    MENU_DAY_TITLE: 'День'
+    MENU_DAY_TITLE: 'День',
+
+    MEAL_UNSELECTED_MESSAGE: 'Для того, что бы добавить блюдо в меню, выберите хотя бы одно блюдо и пункт меню.'
 };

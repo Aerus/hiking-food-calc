@@ -233,6 +233,8 @@ GlobalObserver.subscribe(Event.ADD_DISH_BUTTON_CLICKED, function(data){
             }
 
             DailyMenu.renderModel();
+        }else{
+            alert(Localization.MEAL_UNSELECTED_MESSAGE);
         }
     }
 });
