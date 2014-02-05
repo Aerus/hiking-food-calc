@@ -17,7 +17,7 @@ var Localization = {
     SUPPER_LABEL: "Ужин",
 
     ADD_DISH_BUTTON_TEXT: "Добавить в меню >",
-    REMOVE_DISH_BUTTON_TEXT: "X< Убрать блюдо",
+    REMOVE_DISH_BUTTON_TEXT: "Убрать блюдо X< ",
     CLEAR_BUTTON_TEXT: "X< Очистить",
 
     MENU_DAY_TITLE: 'День',
