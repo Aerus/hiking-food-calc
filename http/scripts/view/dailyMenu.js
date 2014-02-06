@@ -172,6 +172,7 @@ var DailyMenu = {
 
 GlobalObserver.subscribe(Event.APPLY_BUTTON_CLICKED, function(){
     DailyMenu.renderModel();
+    GlobalObserver.publish(Event.MEAL_SELECTION_CHANGED);
 });
 
 GlobalObserver.subscribe(Event.MEAL_CLICKED, function(data){
@@ -210,7 +211,7 @@ GlobalObserver.subscribe(Event.MEAL_SELECTED, function(data){
 });
 
 GlobalObserver.subscribe(Event.MEAL_SELECTION_CHANGED, function(data){
-    if (!data.event.srcElement.isClass(CSSClass.DISH))
+    if (data && !data.event.srcElement.isClass(CSSClass.DISH))
     if (DailyMenu.selected.meal
         || DailyMenu.selected.mealObj){
         GlobalObserver.publish(Event.MEAL_DISH_UNSELECTED, {
@@ -280,10 +281,14 @@ GlobalObserver.subscribe(Event.REMOVE_DISH_BUTTON_CLICKED, function(){
     }
 });
 
-GlobalObserver.subscribe(Event.MEAL_DISH_SELECTION_CHANGED, function(){
-    if (DailyMenu.selected.dish){
-        MenuControls.showAddDishButton();
+GlobalObserver.subscribe(Event.MEAL_SELECTION_CHANGED, function(){
+    if (DailyMenu.selected.meal){
+        GlobalObserver.publish(Request.UPDATE_ADD_DISH_BUTTON_VISIBLE, {
+            visibleByDailyMenu: true
+        });
     }else{
-        MenuControls.hideAddDishButton();
+        GlobalObserver.publish(Request.UPDATE_ADD_DISH_BUTTON_VISIBLE, {
+            visibleByDailyMenu: false
+        });
     }
 });

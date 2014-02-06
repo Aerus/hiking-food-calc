@@ -48,5 +48,36 @@ var MenuControls = {
 
     showClearDishButton: function(){
         this.getClearButton().removeClass(CSSClass.HIDDEN);
+    },
+
+    addButtonVisibleState: {
+        visibleByDishList: false,
+        visibleByDailyMenu: false
     }
 };
+
+GlobalObserver.subscribe(Request.UPDATE_ADD_DISH_BUTTON_VISIBLE, function(data){
+    var changed = false;
+    if ('boolean' === typeof data.visibleByDishList) {
+        MenuControls.addButtonVisibleState.visibleByDishList = data.visibleByDishList;
+        changed = true;
+    }
+    if ('boolean' === typeof data.visibleByDailyMenu) {
+        MenuControls.addButtonVisibleState.visibleByDailyMenu = data.visibleByDailyMenu;
+        changed = true;
+    }
+
+    if (changed){
+        GlobalObserver.publish(Event.ADD_DISH_BUTTON_VISIBLE_STATE_CHANGED, MenuControls.addButtonVisibleState);
+    }
+});
+
+GlobalObserver.subscribe(Event.ADD_DISH_BUTTON_VISIBLE_STATE_CHANGED, function(data){
+    if (data
+        && data.visibleByDailyMenu
+        && data.visibleByDishList){
+        MenuControls.showAddDishButton();
+    }else{
+        MenuControls.hideAddDishButton();
+    }
+});

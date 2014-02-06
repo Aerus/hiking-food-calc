@@ -104,8 +104,12 @@ GlobalObserver.subscribe(Event.DISH_LIST_CHECKED_STATE_CHANGE, function(data){
 
 GlobalObserver.subscribe(Event.DISH_LIST_CHECKED_STATE_CHANGE, function(data){
     if (DishList.getSelectedCount() > 0){
-        MenuControls.showAddDishButton();
+        GlobalObserver.publish(Request.UPDATE_ADD_DISH_BUTTON_VISIBLE, {
+            visibleByDishList: true
+        });
     }else{
-        MenuControls.hideAddDishButton();
+        GlobalObserver.publish(Request.UPDATE_ADD_DISH_BUTTON_VISIBLE, {
+            visibleByDishList: false
+        });
     }
 });
