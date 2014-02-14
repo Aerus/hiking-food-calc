@@ -25,7 +25,7 @@
 
         <section id="selector">
             <form name="foodSelector">
-                <div>
+                <div id="adventureSettings">
                     <label for="daysCount">
                         <script>document.write(Localization.DAYS_LABLE)</script>
                     </label>
@@ -60,7 +60,7 @@
                     <script>
                         document.getElementById('addDishButton').value = Localization.ADD_DISH_BUTTON_TEXT;
                         document.getElementById('addDishButton').onclick = function(event){
-                            GlobalObserver.publish(Event.ADD_DISH_BUTTON_CLICKED, event);
+                            GlobalObserver.publish(Event.ADD_DISH_BUTTON_CLICKED, {event: event});
                         };
                     </script>
                     <br/>
@@ -68,7 +68,7 @@
                     <script>
                         document.getElementById('removeDishButton').value = Localization.REMOVE_DISH_BUTTON_TEXT;
                         document.getElementById('removeDishButton').onclick = function(event){
-                            GlobalObserver.publish(Event.REMOVE_DISH_BUTTON_CLICKED, event);
+                            GlobalObserver.publish(Event.REMOVE_DISH_BUTTON_CLICKED, {event: event});
                         };
                     </script>
                     <br/>
@@ -76,7 +76,7 @@
                     <script>
                         document.getElementById('clearButton').value = Localization.CLEAR_BUTTON_TEXT;
                         document.getElementById('clearButton').onclick = function(event){
-                            GlobalObserver.publish(Event.CLEAR_BUTTON_CLICKED, event);
+                            GlobalObserver.publish(Event.CLEAR_BUTTON_CLICKED, {event: event});
                         };
                     </script>
                 </div>
@@ -105,6 +105,7 @@
     <!-- JS -->
     <script src="scripts/db/dbMokup.js"></script>
     <script src="scripts/db/dbWrap.js"></script>
+    <script src="scripts/db/DB.js"></script>
 
     <script src="scripts/view/groupSettings.js"></script>
     <script src="scripts/view/meal.js"></script>

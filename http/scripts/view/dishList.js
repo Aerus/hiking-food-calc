@@ -2,6 +2,7 @@
  * Created by Serhii_Kotyk on 1/3/14.
  */
 var DishList = {
+    selectedCheckboxQuery: 'input[type=checkbox]:checked',
     selectedDishQuery: 'input[type=checkbox]:checked + label',
 
     getDishListDomElement: function(){
@@ -67,6 +68,25 @@ var DishList = {
         return labels.length || 0;
     },
 
+    /**
+     * gets refferences of checked checkboxes
+     */
+    getCheckedCheckboxed: function(){
+        return this.getDishListDomElement().querySelectorAll(this.selectedCheckboxQuery);
+    },
+
+    /**
+     * unselects selected dishes
+     */
+    clearSelection: function(){
+        var selected = this.getCheckedCheckboxed();
+
+        for(var i = 0; i < selected.length; i++){
+            selected[i].checked = false;
+            GlobalObserver.publish(Event.DISH_LIST_CHECKED_STATE_CHANGE, {sender: selected[i]});
+        }
+    },
+
     onload: function(){
         this.refill();
 
@@ -112,4 +132,8 @@ GlobalObserver.subscribe(Event.DISH_LIST_CHECKED_STATE_CHANGE, function(data){
             visibleByDishList: false
         });
     }
+});
+
+GlobalObserver.subscribe(Event.DISHES_ADDED, function(){
+    DishList.clearSelection();
 });

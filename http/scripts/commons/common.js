@@ -291,3 +291,42 @@ Node.prototype.toggleClass = function(className){
         }
     }
 };
+
+Node.prototype.insertAfter = function (referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+};
+
+/**
+ * Creates an object hirearchy by following namespace
+ * @param {String/Array} package
+ */
+function namespace(package, context){
+    context = context || window;
+
+    var parts = package instanceof Array ? package : package.split('.');
+    if (parts instanceof Array
+        && parts.length > 0){
+        if (!context[parts[0]]){
+            context[parts[0]] = {};
+        }
+
+        if (parts.length == 1){
+            return context[parts[0]];
+        } else if(parts.length > 1){
+            parts.splice(0, 1);
+            return namespace(parts, context[parts[0]]);
+        }
+    }
+
+    return context;
+};
+
+/**
+ * returns uniq id
+ */
+function uniqId(){
+    uniqId.counter = uniqId.counter || 0;
+    uniqId.prefix = uniqId.prefix || "uid";
+
+    return uniqId.prefix + uniqId.counter++;
+}

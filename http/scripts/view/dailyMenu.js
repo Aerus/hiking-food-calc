@@ -33,11 +33,25 @@ var DailyMenu = {
                 //use anonym function to avoid scope conflicts
                 //and ovverides of veriables in loop
                 var dishel = function (meal){
-                    var currentDish = meal.getDish(i),
+                    var dishDropButton = buildElement('span', {
+                        class: CSSClass.BUTTON + ' ' + CSSClass.BUTTON_DROP,
+                        innerText: '+'
+                        }),
+                        currentDish = meal.getDish(i),
                         dishElement = buildElement('span', {
                             class: CSSClass.DISH,
-                            innerText: currentDish
+                            innerText: currentDish,
+                            dropButton: dishDropButton
                         });
+
+                    dishDropButton.onclick = function(event){
+                        GlobalObserver.publish(Event.DISH_DROP_BUTTON_CLICKED, {
+                            event: event,
+                            sender: dishDropButton,
+                            dish: currentDish,
+                            meal: meal
+                        });
+                    };
 
                     dishElement.onclick = function(event){
                         GlobalObserver.publish(Event.MEAL_DISH_CLICKED, {
@@ -161,6 +175,7 @@ var DailyMenu = {
         for(var key in this.selected){
             this.selected[key] = null;
         }
+        GlobalObserver.publish(Event.MEAL_SELECTION_CHANGED);
     },
 
     model: {
@@ -172,7 +187,6 @@ var DailyMenu = {
 
 GlobalObserver.subscribe(Event.APPLY_BUTTON_CLICKED, function(){
     DailyMenu.renderModel();
-    GlobalObserver.publish(Event.MEAL_SELECTION_CHANGED);
 });
 
 GlobalObserver.subscribe(Event.MEAL_CLICKED, function(data){
@@ -238,6 +252,7 @@ GlobalObserver.subscribe(Event.ADD_DISH_BUTTON_CLICKED, function(data){
             alert(Localization.MEAL_UNSELECTED_MESSAGE);
         }
     }
+    GlobalObserver.publish(Event.DISHES_ADDED, data);
 });
 
 GlobalObserver.subscribe(Event.MEAL_DISH_CLICKED, function(data){
@@ -276,9 +291,21 @@ GlobalObserver.subscribe(Event.REMOVE_DISH_BUTTON_CLICKED, function(){
         if (DailyMenu.selected.dishObj
             && DailyMenu.selected.mealObj){
             DailyMenu.selected.mealObj.remove(DailyMenu.selected.dishObj);
+            GlobalObserver.publish(Event.MEAL_DISH_UNSELECTED, {
+                sender: DailyMenu.selected.dish,
+                dish: DailyMenu.selected.dishObj
+            });
             DailyMenu.renderModel();
         }
     }
+});
+
+GlobalObserver.subscribe(Event.DISH_DROP_BUTTON_CLICKED, function(data){
+    data.event.stopImmediatePropagation();
+
+    data.meal.remove(data.dish);
+
+    DailyMenu.renderModel();
 });
 
 GlobalObserver.subscribe(Event.MEAL_SELECTION_CHANGED, function(){

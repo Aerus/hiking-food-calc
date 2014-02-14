@@ -13,6 +13,7 @@ var Event = {
     APPLY_BUTTON_CLICKED: __i++,
     MEAL_CLICKED: __i++,
     ADD_DISH_BUTTON_CLICKED: __i++,
+    DISHES_ADDED: __i++,
     REMOVE_DISH_BUTTON_CLICKED: __i++,
     ADD_DISH_BUTTON_VISIBLE_STATE_CHANGED: __i++,
     CLEAR_BUTTON_CLICKED: __i++,
@@ -21,6 +22,7 @@ var Event = {
     DISH_LIST_CHECKED_STATE_CHANGE: __i++,
     DISH_CHECKED: __i++,
     DISH_UNCHECKED: __i++,
+    DISH_DROP_BUTTON_CLICKED: __i++,
     MEAL_DISH_SELECTION_CHANGED: __i++,
     MEAL_DISH_SELECTED: __i++,
     MEAL_DISH_UNSELECTED: __i++,
@@ -41,5 +43,7 @@ var CSSClass = {
     MENU_DAY: 'menu-day',
     MENU_DAY_LABEL: 'menu-day-label',
     MENU_DAYS_LIST: 'menu-days-list',
-    HIDDEN: 'hidden'
+    HIDDEN: 'hidden',
+    BUTTON: 'button',
+    BUTTON_DROP: 'button-drop'
 };

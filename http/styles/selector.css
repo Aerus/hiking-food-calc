@@ -5,9 +5,16 @@
 
 #dishSelector, #selectionControls, #selectionDestination{
     display: inline-block;
-    min-width: 150px;
+    min-width: 250px;
 }
 
 #daysCount, #peopleCount{
     width: 100px;
+}
+
+#adventureSettings input{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+    margin-bottom: 2em;
 }
