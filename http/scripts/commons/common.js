@@ -133,6 +133,20 @@ function clone(obj){
 }
 
 /**
+ * Instantiate new object with parameters
+ * @param cosntr
+ * @param args
+ * @returns {Constr} instanceof constructor
+ */
+function applyConstruct(cosntr, args){
+    function F() {
+        return cosntr.apply(this, args);
+    }
+    F.prototype = cosntr.prototype;
+    return new F();
+}
+
+/**
  *
  * Creates a function in global scope which when called
  * creates object
@@ -185,11 +199,11 @@ function Class(name, construct, parent){
 
             //instantiate object as a parent
             if (parent){
-                parentInstance = new parent();
+                parentInstance = applyConstruct(parent, arguments);
             }
 
             //override all parent fields with child fields
-            var extender = new construct();
+            var extender = applyConstruct(construct, arguments);
 
             if (parentInstance){
                 for(var key in parentInstance){
@@ -330,3 +344,7 @@ function uniqId(){
 
     return uniqId.prefix + uniqId.counter++;
 }
+
+String.prototype.endsWith = function(substring){
+    return this.lastIndexOf(substring) == this.length - substring.length;
+};
