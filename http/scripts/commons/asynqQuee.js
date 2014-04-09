@@ -32,11 +32,11 @@ function AsyncQueue(){
                 onsuccess();
             }
         },
-        callback = function(data){
+        callback = function(tx, data){
             queue.shift();
             callNext();
         },
-        errorCallback = function(error){
+        errorCallback = function(tx, error){
             console.log(queue[0], error);
         };
 

@@ -136,5 +136,46 @@ var CalcDB = {
 
         queue.start();
         return queue;
+    },
+
+    /*
+    * вот расчеты
+     Блок "Упаковка"
+     - "первое" =
+     продукт1*norm_per_one*people
+     продукт2*norm_per_one*people
+     ............
+     Блок "Закупка"
+     - продукт1 = кол-во_раз_когда_продукт_встречается_в_раскладке*norm_per_one*people*shrinkage
+    * */
+
+    getCalculationsForOneMeal: function(dishesArray, numberOfPeople, callBack, errorCallBack){
+        function getBuyCalculationSql(){
+            var q = "SELECT " +
+                "p.name " +
+                    ", SUM(p.normPerOne * @people * p.shrinkage) as buy " +
+                    ", SUM(p.normPerOne * @people2) as pack " +
+                "FROM " +
+                "Products p , Dishes d , ProductsInDishes pd " +
+                "WHERE " +
+                "p.pid = pd.pid " +
+                "AND d.did = pd.did " +
+                "AND d.name IN (@dishes) " +
+                "GROUP BY " +
+                "p.name",
+                    q = q.replace('@people', numberOfPeople)
+                        .replace('@people2', numberOfPeople)
+                        .replace('@dishes', "'" + dishesArray.join("', '") + "'");
+            return q;
+        }
+
+        this.manager.execute(
+            getBuyCalculationSql(),
+            null,
+            callBack,
+            errorCallBack
+        );
+
+        return getBuyCalculationSql();
     }
 };
