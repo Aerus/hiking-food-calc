@@ -3,7 +3,7 @@
  */
 var DishList = {
     selectedCheckboxQuery: 'input[type=checkbox]:checked',
-    selectedDishQuery: 'input[type=checkbox]:checked + label',
+    selectedDishQuery: 'label input[type=checkbox]:checked',
 
     getDishListDomElement: function(){
         var element = document.getElementById('dishSelector');
@@ -26,12 +26,13 @@ var DishList = {
             buildElement(
                 'div',
                 {
-                    checkbox: {
-                        _tag: 'input',
-                        type: 'checkbox'
-                    },
                     label: {
                         _tag: 'label',
+                        class: CSSClass.DISH_LIST_LABEL,
+                        checkbox: {
+                            _tag: 'input',
+                            type: 'checkbox'
+                        },
                         innerText: name
                     }
                 }
@@ -45,13 +46,13 @@ var DishList = {
      * @returns {Array} String[] dish names
      */
     getSelected: function(){
-        var labels = this.getDishListDomElement().querySelectorAll(this.selectedDishQuery);
+        var checkboxes = this.getDishListDomElement().querySelectorAll(this.selectedDishQuery);
         var results = [];
 
-        if (labels instanceof NodeList
-            && labels.length > 0){
-            for (var i = 0; i < labels.length; i++){
-                results.push(labels[i].innerText);
+        if (checkboxes instanceof NodeList
+            && checkboxes.length > 0){
+            for (var i = 0; i < checkboxes.length; i++){
+                results.push((checkboxes[i].parentElement || checkboxes[i].parentNode).innerText);
             }
         }
 
@@ -136,4 +137,12 @@ GlobalObserver.subscribe(Event.DISH_LIST_CHECKED_STATE_CHANGE, function(data){
 
 GlobalObserver.subscribe(Event.DISHES_ADDED, function(){
     DishList.clearSelection();
+});
+
+GlobalObserver.subscribe(Event.DISH_CHECKED, function(data){
+    data && data.sender && (data.sender.parentNode || data.sender.parentElement).addClass(CSSClass.SELECTED);
+});
+
+GlobalObserver.subscribe(Event.DISH_UNCHECKED, function(data){
+    data && data.sender && (data.sender.parentNode || data.sender.parentElement).removeClass(CSSClass.SELECTED);
 });

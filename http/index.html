@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="demo.appcache">
+<html manifest="offline.appcache">
 <head>
     <meta charset="UTF-8">
     <title>Food advisor</title>
@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="styles/selector.css">
     <link rel="stylesheet" type="text/css" href="styles/dailyMenu.css">
     <link rel="stylesheet" type="text/css" href="styles/menuControls.css">
+    <link rel="stylesheet" type="text/css" href="styles/results.css">
 
     <!-- Must-have js files-->
     <script src="scripts/commons/localization.js"></script>
@@ -90,10 +91,20 @@
         </section>
 
         <section id="results">
-            <article id="packed">
+            <input type="button" id="calculateButton" value="">
+            <script>
+                document.getElementById('calculateButton').value = Localization.CALCULATE_BUTTON_TEXT;
+                document.getElementById('calculateButton').onclick = function(event){
+                    GlobalObserver.publish(Event.CALCULATE_BUTTON_CLICK, {event: event});
+                };
+            </script>
+            <article id="pack">
 
             </article>
             <article id="buy">
+
+            </article>
+            <article id="together" class="tableResults">
 
             </article>
         </section>
@@ -115,6 +126,8 @@
     <script src="scripts/view/dishList.js"></script>
     <script src="scripts/view/dailyMenu.js"></script>
     <script src="scripts/view/menuControls.js"></script>
+    <script src="scripts/view/results.js"></script>
+    <script src="scripts/view/calculateResults.js"></script>
 
     <!-- ONLOAD -->
     <script src="scripts/onload.js"></script>

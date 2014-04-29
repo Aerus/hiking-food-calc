@@ -28,7 +28,8 @@ var Event = {
     MEAL_DISH_UNSELECTED: __i++,
     MEAL_SELECTION_CHANGED: __i++,
     MEAL_SELECTED: __i++,
-    MEAL_UNSELECTED: __i++
+    MEAL_UNSELECTED: __i++,
+    CALCULATE_BUTTON_CLICK: __i++
 };
 
 var Request = {
@@ -45,5 +46,6 @@ var CSSClass = {
     MENU_DAYS_LIST: 'menu-days-list',
     HIDDEN: 'hidden',
     BUTTON: 'button',
-    BUTTON_DROP: 'button-drop'
+    BUTTON_DROP: 'button-drop',
+    DISH_LIST_LABEL: 'dish-list-label'
 };

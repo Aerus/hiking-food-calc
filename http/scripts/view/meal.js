@@ -9,6 +9,8 @@ var Meal = function(){
         return dishes[id];
     };
 
+    this.get = this.getDish;
+
     this.addDish = function(dish){
         if (typeof dish === 'string'
             && !this.contains(dish)){
@@ -36,6 +38,8 @@ var Meal = function(){
         return dishes.length;
     };
 
+    this.count = this.dishCount;
+
     this.indexOf = function(el){
         return dishes.indexOf(el);
     };
@@ -45,6 +49,14 @@ var Meal = function(){
         if (index >= 0){
             dishes.splice(index, 1);
         }
+    };
+
+    this.toArray = function(){
+        var array = new Array();
+        for(var i = 0; i < this.dishCount(); i++){
+            array.push(this.getDish(i));
+        }
+        return array;
     };
 
 };

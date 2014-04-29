@@ -18,3 +18,15 @@
 
     margin-bottom: 2em;
 }
+
+#dishSelector .dish-list-label{
+    font-size: x-large;
+    margin-top: .1em;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+}
+
+#dishSelector .dish-list-label.selected{
+    background-color: rgba(34, 137, 197, 0.6) ;
+}

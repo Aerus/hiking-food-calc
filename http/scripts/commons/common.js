@@ -138,9 +138,9 @@ function clone(obj){
  * @param args
  * @returns {Constr} instanceof constructor
  */
-function applyConstruct(cosntr, args){
+function applyConstruct(cosntr, args, context){
     function F() {
-        return cosntr.apply(this, args);
+        return cosntr.apply(context || this, args);
     }
     F.prototype = cosntr.prototype;
     return new F();
@@ -203,7 +203,7 @@ function Class(name, construct, parent){
             }
 
             //override all parent fields with child fields
-            var extender = applyConstruct(construct, arguments);
+            var extender = applyConstruct(construct, arguments, parentInstance);
 
             if (parentInstance){
                 for(var key in parentInstance){
@@ -223,9 +223,11 @@ function Class(name, construct, parent){
             Class[name].prototype = new parent();
         }
 
-        window[name] = Class[name];
-
-    }else{
+        Class.namespace.set(name, Class[name]);
+        return Class[name];
+    }else if('string' === typeof name){
+        return Class.getByName(name);
+    } else{
         throw new Error("Class should have name and cosntructor. " + JSON.stringify({
             name: name,
             constructor: construct,
@@ -234,9 +236,86 @@ function Class(name, construct, parent){
     }
 }
 
+/**
+ * Creates an object hirearchy by following namespace
+ * @param {String/Array} package
+ */
+Class.namespace = function (package, context){
+    context = context || window;
+
+    var parts = package instanceof Array ? package : package.split('.');
+    if (parts instanceof Array
+        && parts.length > 0){
+        if (!context[parts[0]]){
+            context[parts[0]] = {};
+        }
+
+        if (parts.length == 1){
+            return context[parts[0]];
+        } else if(parts.length > 1){
+            return Class.namespace(parts, context[parts.splice(0, 1)]);
+        }
+    }
+
+    return context;
+};
+
+/**
+ * returns last part of namespace
+ * @param {String/Array} package
+ * @returns {String} namespace part
+ */
+Class.namespace.lastName = function (package){
+    var parts = package instanceof Array ? package : package.split('.');
+    if (parts instanceof Array
+        && parts.length > 0){
+        return parts[parts.length - 1];
+    }else{
+        return package;
+    }
+};
+
+/**
+ * returns namespace but for last part of namespace
+ * @param {String/Array} package
+ * @returns {Object} namespace part but for the last one
+ */
+Class.namespace.lastButOne = function (package){
+    var parts = package instanceof Array ? package : package.split('.');
+    if (parts instanceof Array
+        && parts.length > 0){
+        Class.namespace(package);
+        parts.splice(parts.length - 1, 1);
+        return Class.namespace(parts);
+    }else{
+        return window;
+    }
+};
+
+/**
+ * Sets value of object by namespace
+ * @param namespace string or array namespace
+ * @param value object or function
+ */
+Class.namespace.set = function(namespace, value){
+    Class.namespace.lastButOne(namespace)[Class.namespace.lastName(namespace)] = value;
+};
+
 Class.getByName = function(name){
     return Class[name] || window[name];
-}
+};
+
+/**
+ *
+ * @param name Class name
+ * @param constr constructor
+ * @param parent parent class
+ * @constructor
+ */
+Class.Singleton = function(name, constr, parent){
+    var singleTonConstructor = Class(name, constr, parent);
+    Class.namespace.set(name, new singleTonConstructor());
+};
 
 Function.setFunction = function(name, functionBody){
     eval.call(this, 'var ' + name + ' = ' + functionBody);
@@ -308,31 +387,6 @@ Node.prototype.toggleClass = function(className){
 
 Node.prototype.insertAfter = function (referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-};
-
-/**
- * Creates an object hirearchy by following namespace
- * @param {String/Array} package
- */
-function namespace(package, context){
-    context = context || window;
-
-    var parts = package instanceof Array ? package : package.split('.');
-    if (parts instanceof Array
-        && parts.length > 0){
-        if (!context[parts[0]]){
-            context[parts[0]] = {};
-        }
-
-        if (parts.length == 1){
-            return context[parts[0]];
-        } else if(parts.length > 1){
-            parts.splice(0, 1);
-            return namespace(parts, context[parts[0]]);
-        }
-    }
-
-    return context;
 };
 
 /**

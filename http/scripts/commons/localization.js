@@ -22,5 +22,11 @@ var Localization = {
 
     MENU_DAY_TITLE: 'День',
 
-    MEAL_UNSELECTED_MESSAGE: 'Для того, что бы добавить блюдо в меню, выберите хотя бы одно блюдо и пункт меню.'
+    MEAL_UNSELECTED_MESSAGE: 'Для того, что бы добавить блюдо в меню, выберите хотя бы одно блюдо и пункт меню.',
+
+    PRODUCT_LABEL: 'product',
+    PACK_LABEL: 'pack',
+    BUY_LABEL: 'buy',
+
+    CALCULATE_BUTTON_TEXT: 'расчитать'
 };
