@@ -22,26 +22,52 @@ var CalcDB = {
         this.createIfNotExistProductsInDishesTable();
     },
 
-    contentExistsTable: function(tableName, trueCallback, falseCallback){
-        this.manager.execute('SELECT COUNT * FROM ' + tableName, null, function(data){
-            if (data && data.length > 0){
+    /**
+     *
+     * @param tableName name of table
+     * @param trueCallback callback function if entries exist
+     * @param falseCallback callback function if entries are epsent
+     * @param errorCallBack callback on error
+     */
+    contentExistsTable: function(tableName, trueCallback, falseCallback, errorCallBack){
+        this.manager.execute('SELECT COUNT (*) c FROM ' + tableName, null, function(tx, data){
+            if (data && data.rows && data.rows.length > 0
+                && data.rows.item(0).c > 0 ){
                 trueCallback && trueCallback(data);
             }else{
                 falseCallback && falseCallback(data);
             }
-        }, falseCallback);
+        }, errorCallBack);
     },
 
-    contentExistsDishes: function(trueCallback, falseCallback){
-        this.contentExistsTable('Dishes', trueCallback, falseCallback);
+    /**
+     *
+     * @param trueCallback callback function if entries exist
+     * @param falseCallback callback function if entries are epsent
+     * @param errorCallBack callback on error
+     */
+    onContentExistsDishes: function(trueCallback, falseCallback, errorCallBack){
+        this.contentExistsTable('Dishes', trueCallback, falseCallback, errorCallBack);
     },
 
-    contentExistsProducts: function(trueCallback, falseCallback){
-        this.contentExistsTable('Products', trueCallback, falseCallback);
+    /**
+     *
+     * @param trueCallback callback function if entries exist
+     * @param falseCallback callback function if entries are epsent
+     * @param errorCallBack callback on error
+     */
+    onContentExistsProducts: function(trueCallback, falseCallback, errorCallBack){
+        this.contentExistsTable('Products', trueCallback, falseCallback, errorCallBack);
     },
 
-    contentExistsProductsInDishes: function(trueCallback, falseCallback){
-        this.contentExistsTable('ProductsInDishes', trueCallback, falseCallback);
+    /**
+     *
+     * @param trueCallback callback function if entries exist
+     * @param falseCallback callback function if entries are epsent
+     * @param errorCallBack callback on error
+     */
+    onContentExistsProductsInDishes: function(trueCallback, falseCallback, errorCallBack){
+        this.contentExistsTable('ProductsInDishes', trueCallback, falseCallback, errorCallBack);
     },
 
     dropTable: function(tableName, callBack, errorCallBack){
@@ -177,5 +203,36 @@ var CalcDB = {
         );
 
         return getBuyCalculationSql();
+    },
+
+    reinitIfContentEpsent: function(){
+        var self = this;
+
+        self.createTablesIfNotExist();
+
+        function onError(tx, data){
+            console.error(data.message);
+        }
+
+        self.onContentExistsDishes(function(){
+            //all good
+        }, function(){
+            //content epsent, reinit
+            self.reinitDishesAndProductsInDishesTables();
+        }, onError);
+
+        self.onContentExistsProductsInDishes(function(){
+            //all good
+        }, function(){
+            // content epsent, reinit
+            self.reinitDishesAndProductsInDishesTables();
+        }, onError);
+
+        self.onContentExistsProducts(function(){
+            //all good
+        }, function (){
+            // content epsent, reinit
+            self.reinitProductsTable();
+        }, onError);
     }
 };

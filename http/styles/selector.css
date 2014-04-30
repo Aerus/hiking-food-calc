@@ -6,6 +6,12 @@
 #dishSelector, #selectionControls, #selectionDestination{
     display: inline-block;
     min-width: 250px;
+    max-width: 300px;
+}
+
+#selectionControls{
+    min-width: 150px;
+    max-width: 160px;
 }
 
 #daysCount, #peopleCount{
