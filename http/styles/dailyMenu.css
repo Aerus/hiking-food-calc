@@ -1,0 +1,62 @@
+.menu-day:first-child {
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+.menu-day {
+    padding: .3em;
+    margin-bottom: 0em;
+    margin-top: 1em;
+    padding: 0.3em;
+    border-radius: 0.3em;
+}
+
+.menu-day {
+    background-color: rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+
+.menu-day.selected {
+    background-color: rgba(34, 137, 197, 0.2);
+}
+.meal {
+    padding: .3em;
+    display: block;
+    border-radius: 0.3em;
+}
+
+.meal.selected {
+    background-color: rgba(34, 137, 197, 0.1);
+}
+
+.meal .meal-label {
+    text-transform:uppercase;
+    display: block;
+}
+
+.meal .dish {
+    margin-left: 1em;
+    margin-top: 0.1em;
+    margin-bottom: 0.5em;
+
+    border-width: 1px;
+    border-color: burlywood;
+    border-style: solid;
+
+    border-radius: 1em;
+    padding: 0.5em;
+
+    white-space: nowrap;
+
+    display: inline-block;
+
+    cursor: default;
+}
+
+.meal .dish.selected {
+    background-color: burlywood;
+}
+
+.meal .dish .button-drop {
+    margin-left: 1em;
+}

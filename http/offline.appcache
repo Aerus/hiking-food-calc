@@ -1,0 +1,38 @@
+CACHE MANIFEST
+# 2013-12-20 v1.0.4
+# files to cache:
+CACHE:
+scripts\commons\asynqQuee.js
+scripts\commons\common.js
+scripts\commons\localization.js
+scripts\commons\observer.js
+scripts\commons\pageGlobals.js
+scripts\commons\router.js
+scripts\db\CalcDB.js
+scripts\db\DB.js
+scripts\db\dbManager.js
+scripts\db\dbMokup.js
+scripts\db\dbWrap.js
+scripts\view\calculateResults.js
+scripts\view\dailyMenu.js
+scripts\view\dishList.js
+scripts\view\groupSettings.js
+scripts\view\meal.js
+scripts\view\menuControls.js
+scripts\view\results.js
+scripts\onload.js
+styles\dailyMenu.css
+styles\global.css
+styles\menuControls.css
+styles\results.css
+styles\selector.css
+index.html
+
+NETWORK:
+# files not to cache:
+# * means - do not cache anything (just for dev)
+# *
+
+FALLBACK:
+# page to open when can't load resource
+offline.html

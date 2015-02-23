@@ -1,0 +1,8 @@
+#selectionControls input[type=button] {
+    width: 140px;
+
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+    margin-top: 1em;
+}

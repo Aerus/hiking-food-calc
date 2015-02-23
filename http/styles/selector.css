@@ -1,0 +1,38 @@
+.v-scrollable{
+    height: 300px;
+    overflow-y: auto;
+}
+
+#dishSelector, #selectionControls, #selectionDestination{
+    display: inline-block;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+#selectionControls{
+    min-width: 150px;
+    max-width: 160px;
+}
+
+#daysCount, #peopleCount{
+    width: 100px;
+}
+
+#adventureSettings input{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+    margin-bottom: 2em;
+}
+
+#dishSelector .dish-list-label{
+    font-size: x-large;
+    margin-top: .1em;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+}
+
+#dishSelector .dish-list-label.selected{
+    background-color: rgba(34, 137, 197, 0.6) ;
+}
